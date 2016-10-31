@@ -1,0 +1,84 @@
+body {
+  background-image: url('/public/images/dream.jpg');
+  background-size: 100%;
+}
+
+#sidebar {
+  border-style: none;
+  background-color: rgba(76, 143, 184, 0.54);
+  height: 600px;
+  width: 320px;
+  border-radius: 1%;
+  margin-right: 0%;
+  display: flex;
+}
+
+#display {
+  border-style: none;
+  background-color: rgba(76, 143, 184, 0.54);
+  height: 600px;
+  width: 915px;
+  border-radius: 1%;
+  display: flex;
+  flex-direction: column;
+  justify-content: flex-start;
+}
+
+#container {
+  display: flex;
+  flex-direction: row;
+  justify-content: space-around;
+}
+
+#logo {
+  margin-left: 0px;
+  margin-right: 0px;
+  border-style: none;
+  border-color: #383A3F;
+  width: 30%;
+  height: 85px;
+  background-color: rgba(76, 143, 184, 0.54);
+  border-radius: 20%;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+}
+
+#logoContainer {
+  margin-bottom: 20px;
+  display: flex;
+  justify-content: center;
+}
+
+#title {
+  color: #383A3F;
+  margin-top: 0%;
+  margin-bottom: 0%;
+  display: flex;
+  justify-content: center;
+}
+
+#tagline {
+  color: #383A3F;
+  display: flex;
+  justify-content: center;
+}
+
+#projectTitle {
+  color: #383A3F;
+  height: 30px;
+  margin-top: 10px;
+  margin-bottom: 10px;
+}
+
+#entryButton {
+  margin-top: 0%;
+  margin-bottom: 0px;
+  height: 20px;
+}
+
+#entryButtonsContainer {
+  height: 20px;
+  position: flex;
+  align-items: row;
+}
