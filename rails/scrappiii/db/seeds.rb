@@ -7,19 +7,23 @@
 #   Mayor.create(name: 'Emanuel', city: cities.first)
 
 Comment.delete_all()
-Text.delete_all()
+Photo.delete_all()
 Entry.delete_all()
 Project.delete_all()
 
-p1 = Project.create({title: "my first movie", summary: "a delightful family romp with alligators"})
+p1 = Project.create({title: "Florida holiday", summary: "a delightful family trip with alligators"})
 
-e1 = Entry.create({title: "First page of the script", author: "James Scott", project_id: p1.id})
-e2 = Entry.create({title: "Second page of the script", author: "James Scott", project_id: p1.id})
+e1 = Entry.create({title: "Day 1", tagline: "Fun fun fun in the sun sun sun", mainPhoto: "http://www.britishairways.com/assets/images/global/components/bodyCopy/240/240x240-florida-sign-getty-157557967_75.jpg", body: "Today we went on holiday to florida", author: "James Scott", project_id: p1.id})
 
-t1 = Text.create({body: "Man 1: Good morning, how do you do?
-                      Alligator: I'm going to eat you.",
-                 entry_id: e1.id})
-t2 = Text.create({body: "Man 1: OH MY GOD, IT'S EATING ME!!!", entry_id: e2.id})
+e2 = Entry.create({title: "Day 2", tagline: "too many crocs", mainPhoto: "https://upload.wikimedia.org/wikipedia/commons/b/bd/Nile_crocodile_head.jpg", body: "Little jimmy didn't stand a chance :(", author: "James Scott", project_id: p1.id})
 
-c1 = Comment.create({comment: "needs expanding", author: "James Scott", text_id: t1.id})
-c2 = Comment.create({comment: "this is aweful, you're fired", author: "mr alligator", text_id: t1.id})
+ph1 = Photo.create({title: "Stock photo", link: "https://i.ytimg.com/vi/Y0Ni4S8HuJg/maxresdefault.jpg", description: "spooky crocodile", entry_id: e1.id})
+
+ph2 = Photo.create({title: "Stock photo", link: "https://i.ytimg.com/vi/Y0Ni4S8HuJg/maxresdefault.jpg", description: "spooky crocodile", entry_id: e1.id})
+
+ph3 = Photo.create({title: "Stock photo", link: "https://i.ytimg.com/vi/Y0Ni4S8HuJg/maxresdefault.jpg", description: "spooky crocodile", entry_id: e1.id})
+
+ph4 = Photo.create({title: "Stock photo", link: "https://i.ytimg.com/vi/Y0Ni4S8HuJg/maxresdefault.jpg", description: "spooky crocodile", entry_id: e1.id})
+
+c1 = Comment.create({comment: "needs expanding", author: "James Scott", entry_id: e1.id})
+c2 = Comment.create({comment: "your shit mate", author: "mr alligator", entry_id: e1.id})

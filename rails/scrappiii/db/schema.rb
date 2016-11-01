@@ -11,20 +11,20 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20161028125820) do
+ActiveRecord::Schema.define(version: 20161031183046) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
 
   create_table "comments", force: :cascade do |t|
     t.string   "author"
-    t.integer  "text_id"
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
     t.string   "comment"
+    t.integer  "entry_id"
   end
 
-  add_index "comments", ["text_id"], name: "index_comments_on_text_id", using: :btree
+  add_index "comments", ["entry_id"], name: "index_comments_on_entry_id", using: :btree
 
   create_table "entries", force: :cascade do |t|
     t.string   "title"
@@ -32,9 +32,23 @@ ActiveRecord::Schema.define(version: 20161028125820) do
     t.integer  "project_id"
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
+    t.string   "body"
+    t.string   "tagline"
+    t.string   "mainPhoto"
   end
 
   add_index "entries", ["project_id"], name: "index_entries_on_project_id", using: :btree
+
+  create_table "photos", force: :cascade do |t|
+    t.string   "title"
+    t.string   "link"
+    t.string   "description"
+    t.datetime "created_at",  null: false
+    t.datetime "updated_at",  null: false
+    t.integer  "entry_id"
+  end
+
+  add_index "photos", ["entry_id"], name: "index_photos_on_entry_id", using: :btree
 
   create_table "projects", force: :cascade do |t|
     t.string   "title"
@@ -45,14 +59,11 @@ ActiveRecord::Schema.define(version: 20161028125820) do
 
   create_table "texts", force: :cascade do |t|
     t.string   "body"
-    t.integer  "entry_id"
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
   end
 
-  add_index "texts", ["entry_id"], name: "index_texts_on_entry_id", using: :btree
-
-  add_foreign_key "comments", "texts"
+  add_foreign_key "comments", "entries"
   add_foreign_key "entries", "projects"
-  add_foreign_key "texts", "entries"
+  add_foreign_key "photos", "entries"
 end

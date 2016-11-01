@@ -82,3 +82,8 @@ body {
   position: flex;
   align-items: row;
 }
+
+#mainPhoto {
+  height: 60px;
+  width: 80px;
+}

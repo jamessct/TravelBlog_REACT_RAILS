@@ -21522,13 +21522,13 @@
 	'use strict';
 
 	var React = __webpack_require__(1);
-	var Text = __webpack_require__(174);
-	var EntryButtons = __webpack_require__(175);
+	var EntryButtons = __webpack_require__(174);
 
 	var DisplayBox = React.createClass({
 	  displayName: 'DisplayBox',
 
 	  render: function render() {
+	    console.log(this.props.entry);
 	    if (!this.props.project) return React.createElement('div', { id: 'display' });
 	    return React.createElement(
 	      'div',
@@ -21554,41 +21554,10 @@
 /* 174 */
 /***/ function(module, exports, __webpack_require__) {
 
-	"use strict";
-
-	var React = __webpack_require__(1);
-
-	var Text = React.createClass({
-	  displayName: "Text",
-
-	  render: function render() {
-	    if (!this.props.entry) return React.createElement("div", null);
-	    console.log(this.props.entry);
-	    var body = this.props.entry.text.map(function (text, index) {
-	      return React.createElement(
-	        "p",
-	        null,
-	        text.body
-	      );
-	    });
-	    return React.createElement(
-	      "div",
-	      { id: "textDiv" },
-	      body
-	    );
-	  }
-	});
-
-	module.exports = Text;
-
-/***/ },
-/* 175 */
-/***/ function(module, exports, __webpack_require__) {
-
 	'use strict';
 
 	var React = __webpack_require__(1);
-	var Text = __webpack_require__(174);
+	var MainEntry = __webpack_require__(175);
 
 	var EntryButtons = React.createClass({
 	  displayName: 'EntryButtons',
@@ -21610,14 +21579,60 @@
 	      'div',
 	      { id: 'entryButtonsContainer' },
 	      buttons,
-	      React.createElement(Text, {
-	        id: 'textBox',
+	      React.createElement(MainEntry, {
 	        entry: this.props.entry })
 	    );
 	  }
 	});
 
 	module.exports = EntryButtons;
+
+/***/ },
+/* 175 */
+/***/ function(module, exports, __webpack_require__) {
+
+	'use strict';
+
+	var React = __webpack_require__(1);
+	var Comments = __webpack_require__(178);
+	var Photos = __webpack_require__(!(function webpackMissingModule() { var e = new Error("Cannot find module \"./Photos.jsx\""); e.code = 'MODULE_NOT_FOUND'; throw e; }()));
+
+	var MainEntry = React.createClass({
+	  displayName: 'MainEntry',
+
+	  render: function render() {
+	    if (!this.props.entry) return React.createElement('div', null);
+	    console.log(this.props.entry);
+	    var title = React.createElement(
+	      'h2',
+	      null,
+	      this.props.entry.title
+	    );
+	    var tagline = React.createElement(
+	      'h4',
+	      null,
+	      this.props.entry.tagline
+	    );
+	    var mainPhoto = React.createElement('img', { id: 'mainPhoto', src: this.props.entry.mainPhoto });
+	    var text = React.createElement(
+	      'p',
+	      null,
+	      this.props.entry.body
+	    );
+	    return React.createElement(
+	      'div',
+	      null,
+	      title,
+	      tagline,
+	      mainPhoto,
+	      text,
+	      React.createElement(Photos, null),
+	      React.createElement(Comments, null)
+	    );
+	  }
+	});
+
+	module.exports = MainEntry;
 
 /***/ },
 /* 176 */
@@ -21627,7 +21642,6 @@
 
 	var React = __webpack_require__(1);
 	var ProjectSelector = __webpack_require__(177);
-	var FilterSelector = __webpack_require__(178);
 
 	var OptionsBox = React.createClass({
 	  displayName: 'OptionsBox',
@@ -21700,19 +21714,25 @@
 
 	var React = __webpack_require__(1);
 
-	var FilterSelector = React.createClass({
-	  displayName: "FilterSelector",
+	var Comments = React.createClass({
+	  displayName: "Comments",
+
+	  commentsOnClick: function commentsOnClick(event) {},
 
 	  render: function render() {
 	    return React.createElement(
 	      "div",
 	      null,
-	      React.createElement("select", { id: "filterSelector" })
+	      React.createElement(
+	        "button",
+	        { id: "commentsButton", onClick: "commentsOnClick" },
+	        "Show/Hide Comments"
+	      )
 	    );
 	  }
 	});
 
-	module.exports = FilterSelector;
+	module.exports = Comments;
 
 /***/ }
 /******/ ]);

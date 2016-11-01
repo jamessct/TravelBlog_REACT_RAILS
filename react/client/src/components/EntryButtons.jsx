@@ -1,5 +1,5 @@
 var React = require('react');
-var Text = require('./Text.jsx');
+var MainEntry = require('./MainEntry.jsx');
 
 var EntryButtons = React.createClass({
   entryOnClick: function(event) {
@@ -15,10 +15,9 @@ var EntryButtons = React.createClass({
     return (
       <div id="entryButtonsContainer">
         {buttons}
-        <Text 
-          id="textBox"
+        <MainEntry 
           entry={this.props.entry}>
-        </Text>
+        </MainEntry>
       </div>
     )
   }

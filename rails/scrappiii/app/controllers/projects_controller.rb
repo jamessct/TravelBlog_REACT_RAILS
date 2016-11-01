@@ -1,7 +1,7 @@
 class ProjectsController < ApplicationController
   def index
     projects = Project.all
-    render :json => projects.as_json(include: [:entries => { include: [:text => {include: [:comment]}]}])
+    render :json => projects.as_json(include: [:entries => { include: [:photo, :comment]}]) 
   end
 
   def show

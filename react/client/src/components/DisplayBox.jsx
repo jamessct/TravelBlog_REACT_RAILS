@@ -1,9 +1,9 @@
 var React = require('react');
-var Text = require('./Text.jsx');
-var EntryButtons = require('./EntryButtons');
+var EntryButtons = require('./EntryButtons.jsx');
 
 var DisplayBox = React.createClass({
   render: function() {
+    console.log(this.props.entry)
     if(!this.props.project) 
       return <div id="display"></div>
     return (
