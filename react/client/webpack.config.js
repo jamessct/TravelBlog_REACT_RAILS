@@ -4,10 +4,10 @@ config = {
     filename: "bundle.js",
     path: "./build"
   },
+  devtool: "source-map",
   resolve: {
     extensions: ['', '.js', '.jsx']
   },
-  devTool: "source-map",
   module:{
     loaders: [
       {

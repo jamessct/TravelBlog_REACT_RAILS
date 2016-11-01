@@ -16,7 +16,9 @@ var EntryButtons = React.createClass({
       <div id="entryButtonsContainer">
         {buttons}
         <MainEntry 
-          entry={this.props.entry}>
+          entry={this.props.entry}
+          showComments={this.props.showComments}
+          commentVisibility={this.props.commentVisibility}>
         </MainEntry>
       </div>
     )

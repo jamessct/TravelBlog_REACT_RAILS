@@ -87,3 +87,36 @@ body {
   height: 60px;
   width: 80px;
 }
+
+#photos {
+  height: 60px;
+  width: 80px;
+}
+
+#commentButtons {
+  display: flex;
+  align-items: row;
+  justify-content: center;
+}
+
+#showComments {
+  color: #30A9DE;
+  text-decoration: underline;
+  margin-left: 0%;
+  margin-right: 0%;
+}
+
+#hideComments {
+  color: #30A9DE;
+  text-decoration: underline;
+  margin-left: 0%;
+  margin-right: 0%;
+}
+
+#comment {
+  background-color: #FBFFB9;
+}
+
+#comment:nth-child(even) {
+  background-color: tomato;
+}

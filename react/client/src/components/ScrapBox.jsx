@@ -4,7 +4,7 @@ var OptionsBox = require('./OptionsBox.jsx');
 
 var ScrapBox = React.createClass({
   getInitialState: function() {
-    return {projects: [], entries: [], focusProject: null, focusEntry: null}
+    return {projects: [], entries: [], focusProject: null, focusEntry: null, commentVisibility: false}
   },
 
   componentDidMount: function() {
@@ -41,6 +41,10 @@ var ScrapBox = React.createClass({
     this.setState({focusEntry: newEntry});
   },
 
+  showComments: function(value) {
+    this.setState({showComments: value});
+  },
+
   render: function() {
     return (
       <div>
@@ -62,7 +66,9 @@ var ScrapBox = React.createClass({
             project={this.state.focusProject}
             entry={this.state.focusEntry}
             entries={this.state.entries}
-            selectEntry={this.setFocusEntry}>
+            selectEntry={this.setFocusEntry}
+            showComments={this.showComments}
+            commentVisibility={this.state.showComments}>
           </DisplayBox>
         </div>
       </div>

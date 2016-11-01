@@ -3,7 +3,6 @@ var EntryButtons = require('./EntryButtons.jsx');
 
 var DisplayBox = React.createClass({
   render: function() {
-    console.log(this.props.entry)
     if(!this.props.project) 
       return <div id="display"></div>
     return (
@@ -14,7 +13,9 @@ var DisplayBox = React.createClass({
           entry={this.props.entry}
           entries={this.props.entries}
           getEntries={this.props.getEntries}
-          selectEntry={this.props.selectEntry}>
+          selectEntry={this.props.selectEntry}
+          showComments={this.props.showComments}
+          commentVisibility={this.props.commentVisibility}>
         </EntryButtons>
       </div>
     )
