@@ -25,5 +25,15 @@ ph3 = Photo.create({title: "Stock photo", link: "https://i.ytimg.com/vi/Y0Ni4S8H
 
 ph4 = Photo.create({title: "Stock photo", link: "https://i.ytimg.com/vi/Y0Ni4S8HuJg/maxresdefault.jpg", description: "spooky crocodile", entry_id: e1.id})
 
+ph5 = Photo.create({title: "Stock photo", link: "http://www.livescience.com/images/i/000/016/951/original/alligator-smiles.JPG?interpolation=lanczos-none&downsize=660:*", description: "spooky crocodile 2", entry_id: e2.id})
+
+ph6 = Photo.create({title: "Stock photo", link: "http://www.livescience.com/images/i/000/016/951/original/alligator-smiles.JPG?interpolation=lanczos-none&downsize=660:*", description: "spooky crocodile 2", entry_id: e2.id})
+
+ph7 = Photo.create({title: "Stock photo", link: "http://www.livescience.com/images/i/000/016/951/original/alligator-smiles.JPG?interpolation=lanczos-none&downsize=660:*", description: "spooky crocodile 2", entry_id: e2.id})
+
+ph8 = Photo.create({title: "Stock photo", link: "http://www.livescience.com/images/i/000/016/951/original/alligator-smiles.JPG?interpolation=lanczos-none&downsize=660:*", description: "spooky crocodile 2", entry_id: e2.id})
+
 c1 = Comment.create({comment: "needs expanding", author: "James Scott", entry_id: e1.id})
 c2 = Comment.create({comment: "your shit mate", author: "mr alligator", entry_id: e1.id})
+c3 = Comment.create({comment: "needs expanding", author: "James Scott", entry_id: e2.id})
+c4 = Comment.create({comment: "your shit mate", author: "mr alligator", entry_id: e2.id})
