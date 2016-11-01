@@ -12,7 +12,7 @@ var ProjectSelector = React.createClass({
       return <option key={index} value={index}> {project.title} </option>
     })
     return (
-      <div id="sidebar">
+      <div>
         <select id="projectSelector" defaultValue="default" onChange={this.handleSelectChange}>
           <option id="default">Select a project</option>
           {options}

@@ -21429,7 +21429,7 @@
 	
 	var React = __webpack_require__(1);
 	var DisplayBox = __webpack_require__(173);
-	var OptionsBox = __webpack_require__(178);
+	var OptionsBox = __webpack_require__(180);
 	
 	var ScrapBox = React.createClass({
 	  displayName: 'ScrapBox',
@@ -21449,6 +21449,24 @@
 	      }
 	    }.bind(this);
 	    request.send(null);
+	  },
+	
+	  handleProjectSubmit: function handleProjectSubmit(project) {
+	    var projects = this.state.projects;
+	    var newProject = projects.concat([project.project]);
+	    var url = "http://localhost:3000/api/projects/";
+	    var request = new XMLHttpRequest();
+	    request.open("POST", url);
+	    request.setRequestHeader('Content-Type', 'application/json');
+	    request.onload = function () {
+	      if (request.status === 200) {
+	        console.log("request had loaded");
+	        var responseData = JSON.parse(request.responseText);
+	        console.log(this.state.projets);
+	        this.setState({ projects: newProject });
+	      }
+	    }.bind(this);
+	    request.send(JSON.stringify(project));
 	  },
 	
 	  getEntries: function getEntries(index) {
@@ -21506,7 +21524,8 @@
 	          project: this.state.focusProject,
 	          entry: this.state.focusEntry,
 	          selectProject: this.setFocusProject,
-	          getEntries: this.getEntries }),
+	          getEntries: this.getEntries,
+	          postRequest: this.handleProjectSubmit }),
 	        React.createElement(DisplayBox, {
 	          project: this.state.focusProject,
 	          entry: this.state.focusEntry,
@@ -21604,7 +21623,7 @@
 	
 	var React = __webpack_require__(1);
 	var CommentsButton = __webpack_require__(176);
-	var Photos = __webpack_require__(177);
+	var Photos = __webpack_require__(179);
 	
 	var MainEntry = React.createClass({
 	  displayName: 'MainEntry',
@@ -21652,7 +21671,7 @@
 	'use strict';
 	
 	var React = __webpack_require__(1);
-	var CommentsList = __webpack_require__(181);
+	var CommentsList = __webpack_require__(177);
 	
 	var CommentsButton = React.createClass({
 	  displayName: 'CommentsButton',
@@ -21700,108 +21719,10 @@
 /* 177 */
 /***/ function(module, exports, __webpack_require__) {
 
-	"use strict";
-	
-	var React = __webpack_require__(1);
-	
-	var Photos = React.createClass({
-	  displayName: "Photos",
-	
-	  render: function render() {
-	    var photos = this.props.entry.photo.map(function (photo, index) {
-	      return React.createElement("img", { id: "photos", key: index, value: index, src: photo.link });
-	    });
-	    return React.createElement(
-	      "div",
-	      null,
-	      photos
-	    );
-	  }
-	});
-	
-	module.exports = Photos;
-
-/***/ },
-/* 178 */
-/***/ function(module, exports, __webpack_require__) {
-
 	'use strict';
 	
 	var React = __webpack_require__(1);
-	var ProjectSelector = __webpack_require__(179);
-	
-	var OptionsBox = React.createClass({
-	  displayName: 'OptionsBox',
-	
-	  render: function render() {
-	    return React.createElement(
-	      'div',
-	      null,
-	      React.createElement(ProjectSelector, {
-	        projects: this.props.projects,
-	        selectProject: this.props.selectProject,
-	        getEntries: this.props.getEntries })
-	    );
-	  }
-	});
-	
-	module.exports = OptionsBox;
-
-/***/ },
-/* 179 */
-/***/ function(module, exports, __webpack_require__) {
-
-	"use strict";
-	
-	var React = __webpack_require__(1);
-	
-	var ProjectSelector = React.createClass({
-	  displayName: "ProjectSelector",
-	
-	  handleSelectChange: function handleSelectChange(event) {
-	    var newIndex = event.target.value;
-	    this.props.selectProject(newIndex);
-	    this.props.getEntries(newIndex);
-	  },
-	
-	  render: function render() {
-	    var options = this.props.projects.map(function (project, index) {
-	      return React.createElement(
-	        "option",
-	        { key: index, value: index },
-	        " ",
-	        project.title,
-	        " "
-	      );
-	    });
-	    return React.createElement(
-	      "div",
-	      { id: "sidebar" },
-	      React.createElement(
-	        "select",
-	        { id: "projectSelector", defaultValue: "default", onChange: this.handleSelectChange },
-	        React.createElement(
-	          "option",
-	          { id: "default" },
-	          "Select a project"
-	        ),
-	        options
-	      )
-	    );
-	  }
-	});
-	
-	module.exports = ProjectSelector;
-
-/***/ },
-/* 180 */,
-/* 181 */
-/***/ function(module, exports, __webpack_require__) {
-
-	'use strict';
-	
-	var React = __webpack_require__(1);
-	var CommentInput = __webpack_require__(182);
+	var CommentInput = __webpack_require__(178);
 	
 	var CommentsList = React.createClass({
 	  displayName: 'CommentsList',
@@ -21836,7 +21757,7 @@
 	module.exports = CommentsList;
 
 /***/ },
-/* 182 */
+/* 178 */
 /***/ function(module, exports, __webpack_require__) {
 
 	"use strict";
@@ -21865,6 +21786,194 @@
 	});
 	
 	module.exports = CommentInput;
+
+/***/ },
+/* 179 */
+/***/ function(module, exports, __webpack_require__) {
+
+	"use strict";
+	
+	var React = __webpack_require__(1);
+	
+	var Photos = React.createClass({
+	  displayName: "Photos",
+	
+	  render: function render() {
+	    var photos = this.props.entry.photo.map(function (photo, index) {
+	      return React.createElement("img", { id: "photos", key: index, value: index, src: photo.link });
+	    });
+	    return React.createElement(
+	      "div",
+	      null,
+	      photos
+	    );
+	  }
+	});
+	
+	module.exports = Photos;
+
+/***/ },
+/* 180 */
+/***/ function(module, exports, __webpack_require__) {
+
+	'use strict';
+	
+	var React = __webpack_require__(1);
+	var ProjectSelector = __webpack_require__(181);
+	var NewProject = __webpack_require__(182);
+	
+	var OptionsBox = React.createClass({
+	  displayName: 'OptionsBox',
+	
+	  render: function render() {
+	    return React.createElement(
+	      'div',
+	      { id: 'sidebar' },
+	      React.createElement(
+	        'h4',
+	        null,
+	        'Select a project from the dropdown, or choose one of the options below'
+	      ),
+	      React.createElement(ProjectSelector, {
+	        projects: this.props.projects,
+	        selectProject: this.props.selectProject,
+	        getEntries: this.props.getEntries }),
+	      React.createElement('button', { id: 'viewProject' }),
+	      React.createElement('button', { id: 'editProject' }),
+	      React.createElement('button', { id: 'NewProject' }),
+	      React.createElement('button', { id: 'addNewEntry' }),
+	      React.createElement('button', { id: 'deleteProject' }),
+	      React.createElement(NewProject, null)
+	    );
+	  }
+	});
+	
+	module.exports = OptionsBox;
+
+/***/ },
+/* 181 */
+/***/ function(module, exports, __webpack_require__) {
+
+	"use strict";
+	
+	var React = __webpack_require__(1);
+	
+	var ProjectSelector = React.createClass({
+	  displayName: "ProjectSelector",
+	
+	  handleSelectChange: function handleSelectChange(event) {
+	    var newIndex = event.target.value;
+	    this.props.selectProject(newIndex);
+	    this.props.getEntries(newIndex);
+	  },
+	
+	  render: function render() {
+	    var options = this.props.projects.map(function (project, index) {
+	      return React.createElement(
+	        "option",
+	        { key: index, value: index },
+	        " ",
+	        project.title,
+	        " "
+	      );
+	    });
+	    return React.createElement(
+	      "div",
+	      null,
+	      React.createElement(
+	        "select",
+	        { id: "projectSelector", defaultValue: "default", onChange: this.handleSelectChange },
+	        React.createElement(
+	          "option",
+	          { id: "default" },
+	          "Select a project"
+	        ),
+	        options
+	      )
+	    );
+	  }
+	});
+	
+	module.exports = ProjectSelector;
+
+/***/ },
+/* 182 */
+/***/ function(module, exports, __webpack_require__) {
+
+	"use strict";
+	
+	var React = __webpack_require__(1);
+	
+	var NewProject = React.createClass({
+	  displayName: "NewProject",
+	
+	  getInitialState: function getInitialState() {
+	    return { title: "", author: "", summary: "" };
+	  },
+	
+	  handleProjectChange: function handleProjectChange(event) {
+	    this.setState({ title: event.target.value });
+	  },
+	
+	  handleAuthorChange: function handleAuthorChange(event) {
+	    this.setState({ author: event.target.value });
+	  },
+	
+	  handleSummaryChange: function handleSummaryChange(event) {
+	    this.setState({ summary: event.target.value });
+	  },
+	
+	  handleSubmit: function handleSubmit(event) {
+	    event.preventDefault();
+	    var title = this.state.title.trim();
+	    var author = this.state.author.trim();
+	    var summary = this.state.summary.trim();
+	    if (!name || !author || !summary) {
+	      return React.createElement(
+	        "p",
+	        null,
+	        "Please fill out all fields"
+	      );
+	    }
+	    console.log("is there anybody out there?");
+	    this.props.onProjectSubmit({
+	      project: {
+	        title: title,
+	        author: author,
+	        summary: summary
+	      }
+	    });
+	    this.setState({ title: "", author: "", summary: "" });
+	  },
+	
+	  render: function render() {
+	    return React.createElement(
+	      "form",
+	      { className: "projectForm", onSubmit: this.handleSubmit },
+	      React.createElement("input", {
+	        type: "text",
+	        placeholder: "Project title",
+	        onChange: this.handleProjectChange
+	      }),
+	      React.createElement("input", {
+	        type: "text",
+	        placeholder: "Author",
+	        onChange: this.handleAuthorChange
+	      }),
+	      React.createElement("input", {
+	        type: "text",
+	        placeholder: "Summary",
+	        onChange: this.handleSummaryChange
+	      }),
+	      React.createElement("input", {
+	        type: "submit",
+	        value: "GO!"
+	      })
+	    );
+	  }
+	});
+	
+	module.exports = NewProject;
 
 /***/ }
 /******/ ]);

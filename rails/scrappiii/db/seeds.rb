@@ -11,11 +11,11 @@ Photo.delete_all()
 Entry.delete_all()
 Project.delete_all()
 
-p1 = Project.create({title: "Florida holiday", summary: "a delightful family trip with alligators"})
+p1 = Project.create({title: "Florida holiday", summary: "a delightful family trip with alligators", author: "James Scott",})
 
-e1 = Entry.create({title: "Day 1", tagline: "Fun fun fun in the sun sun sun", mainPhoto: "http://www.britishairways.com/assets/images/global/components/bodyCopy/240/240x240-florida-sign-getty-157557967_75.jpg", body: "Today we went on holiday to florida", author: "James Scott", project_id: p1.id})
+e1 = Entry.create({title: "Day 1", tagline: "Fun fun fun in the sun sun sun", mainPhoto: "http://www.britishairways.com/assets/images/global/components/bodyCopy/240/240x240-florida-sign-getty-157557967_75.jpg", body: "Today we went on holiday to florida", project_id: p1.id})
 
-e2 = Entry.create({title: "Day 2", tagline: "too many crocs", mainPhoto: "https://upload.wikimedia.org/wikipedia/commons/b/bd/Nile_crocodile_head.jpg", body: "Little jimmy didn't stand a chance :(", author: "James Scott", project_id: p1.id})
+e2 = Entry.create({title: "Day 2", tagline: "too many crocs", mainPhoto: "https://upload.wikimedia.org/wikipedia/commons/b/bd/Nile_crocodile_head.jpg", body: "Little jimmy didn't stand a chance :(", project_id: p1.id})
 
 ph1 = Photo.create({title: "Stock photo", link: "https://i.ytimg.com/vi/Y0Ni4S8HuJg/maxresdefault.jpg", description: "spooky crocodile", entry_id: e1.id})
 

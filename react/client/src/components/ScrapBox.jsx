@@ -20,6 +20,25 @@ var ScrapBox = React.createClass({
     request.send(null);
   },
 
+  handleProjectSubmit: function(project) {
+    var projects = this.state.projects;
+    var newProject = projects.concat([project.project])
+    var url = "http://localhost:3000/api/projects/";
+    var request = new XMLHttpRequest();
+    request.open( "POST", url );
+    request.setRequestHeader('Content-Type', 'application/json');
+    request.onload = function() {
+      if( request.status === 200 ) {
+        console.log("request had loaded");
+        var responseData = JSON.parse(request.responseText);
+        console.log(this.state.projets);
+        this.setState({projects: newProject});
+      }
+    }.bind(this);
+    request.send(JSON.stringify(project));
+  },
+
+
   getEntries: function(index) {
     var newProject = this.state.projects[index];
     var entries = newProject.entries.map(function(entry, index) {
@@ -60,7 +79,8 @@ var ScrapBox = React.createClass({
             project={this.state.focusProject}
             entry={this.state.focusEntry}
             selectProject={this.setFocusProject}
-            getEntries={this.getEntries}>
+            getEntries={this.getEntries}
+            postRequest={this.handleProjectSubmit}>
           </OptionsBox>
           <DisplayBox 
             project={this.state.focusProject}
