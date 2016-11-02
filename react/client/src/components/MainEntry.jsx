@@ -19,7 +19,8 @@ var MainEntry = React.createClass({
         <CommentsButton 
           entry={this.props.entry}
           showComments={this.props.showComments}
-          commentVisibility={this.props.commentVisibility}>
+          commentVisibility={this.props.commentVisibility}
+          commentRequest={this.props.commentRequest}>
         </CommentsButton>
       </div>
       

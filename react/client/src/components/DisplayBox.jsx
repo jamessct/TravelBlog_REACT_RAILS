@@ -15,7 +15,8 @@ var DisplayBox = React.createClass({
           getEntries={this.props.getEntries}
           selectEntry={this.props.selectEntry}
           showComments={this.props.showComments}
-          commentVisibility={this.props.commentVisibility}>
+          commentVisibility={this.props.commentVisibility}
+          commentRequest={this.props.commentRequest}>
         </EntryButtons>
       </div>
     )

@@ -14,7 +14,8 @@ var CommentsList = React.createClass({
     if (this.props.commentVisibility === true) 
       return (
         <div id="commentDiv">
-          <CommentInput></CommentInput>
+          <CommentInput
+            commentRequest={this.props.commentRequest}></CommentInput>
           {comments}
         </div>
       )

@@ -24,7 +24,8 @@ var CommentsButton = React.createClass({
           commentVisibility={this.props.commentVisibility}
           comments={this.props.entry.comment}
           entry={this.props.entry}
-          title={this.props.entry.title}>
+          title={this.props.entry.title}
+          commentRequest={this.props.commentRequest}>
         </CommentsList>
       </div>
     )

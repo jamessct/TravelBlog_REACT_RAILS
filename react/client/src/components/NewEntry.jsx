@@ -2,7 +2,7 @@ var React = require('react')
 
 var NewEntry = React.createClass({
   getInitialState: function() {
-    return {title: "", tagline: "", mainPhoto: "", body: "", project_id: null}
+    return {title: "", tagline: "", mainPhoto: "", body: "", project_id: ""}
   },
 
   handleEntryChange: function(event) {
@@ -51,7 +51,7 @@ var NewEntry = React.createClass({
         project_id: project_id
       }
     });
-    this.setState({title: "", tagline: "", mainPhoto: "", body: "", project_id: null})
+    this.setState({title: "", tagline: "", mainPhoto: "", body: "", project_id: ""})
   },
 
   render: function() {

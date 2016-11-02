@@ -4,10 +4,10 @@ var OptionsBox = require('./OptionsBox.jsx');
 
 var ScrapBox = React.createClass({
   getInitialState: function() {
-    return {projects: [], entries: [], focusProject: null, focusEntry: null, commentVisibility: false}
+    return {projects: [], entries: [], comments: null, focusProject: null, focusEntry: null, commentVisibility: false}
   },
-  
-  getProjects(){
+
+  getProjects: function() {
     console.log("getRequest made")
     var url = "http://localhost:3000/api/projects/";
     var request = new XMLHttpRequest();
@@ -15,7 +15,6 @@ var ScrapBox = React.createClass({
     request.onload = function() {
       if( request.status === 200 ) {
         var data = JSON.parse(request.responseText);
-        console.log(data)
         this.setState({projects: data});
         this.forceUpdate()
       }
@@ -23,8 +22,24 @@ var ScrapBox = React.createClass({
     request.send(null);
   },
 
+  getComments: function() {
+    console.log("getRequest made")
+    var url = "http://localhost:3000/api/comments/";
+    var request = new XMLHttpRequest();
+    request.open( "GET", url );
+    request.onload = function() {
+      if( request.status === 200 ) {
+        var data = JSON.parse(request.responseText);
+        this.setState({comments: data});
+        this.forceUpdate()
+      }
+    }.bind(this);
+    request.send(null);
+  },
+
   componentDidMount: function() {
-    this.getProjects()
+    this.getProjects();
+    this.getComments();
   },
 
   handleProjectSubmit: function(project) {
@@ -62,6 +77,23 @@ var ScrapBox = React.createClass({
     this.getProjects()
   },
 
+  handleCommentSubmit: function(comment) {
+    var comments = this.state.comments;
+    var newComment = comments.concat([comment.comment])
+    var url = "http://localhost:3000/api/comments";
+    var request = new XMLHttpRequest();
+    request.open( "POST", url );
+    request.setRequestHeader('Content-Type', 'application/json');
+    request.onload = function() {
+      if( request.status === 200 ) {
+        var responseData = JSON.parse(request.responseText);
+        this.setState({comments: newEntry});
+      }
+    }.bind(this);
+    request.send(JSON.stringify(comment));
+    this.getProjects()
+  },
+
   getEntries: function(index) {
     var newProject = this.state.projects[index];
     var entries = newProject.entries.map(function(entry, index) {
@@ -77,9 +109,6 @@ var ScrapBox = React.createClass({
 
   setFocusEntry: function(index) {
     console.log("set Focus entry ", this.state)
-    // var entries = this.state.focusProject.entries.map(function(entry, index) {
-    //   return entry;
-    // })
     console.log(index)
     var newEntry = this.state.focusProject.entries[index];
     console.log("new entry", newEntry)
@@ -116,7 +145,8 @@ var ScrapBox = React.createClass({
             entries={this.state.entries}
             selectEntry={this.setFocusEntry}
             showComments={this.showComments}
-            commentVisibility={this.state.showComments}>
+            commentVisibility={this.state.showComments}
+            commentRequest={this.handleCommentSubmit}>
           </DisplayBox>
         </div>
       </div>

@@ -21435,7 +21435,7 @@
 	  displayName: 'ScrapBox',
 	
 	  getInitialState: function getInitialState() {
-	    return { projects: [], entries: [], focusProject: null, focusEntry: null, commentVisibility: false };
+	    return { projects: [], entries: [], comments: null, focusProject: null, focusEntry: null, commentVisibility: false };
 	  },
 	
 	  getProjects: function getProjects() {
@@ -21446,7 +21446,6 @@
 	    request.onload = function () {
 	      if (request.status === 200) {
 	        var data = JSON.parse(request.responseText);
-	        console.log(data);
 	        this.setState({ projects: data });
 	        this.forceUpdate();
 	      }
@@ -21454,9 +21453,24 @@
 	    request.send(null);
 	  },
 	
+	  getComments: function getComments() {
+	    console.log("getRequest made");
+	    var url = "http://localhost:3000/api/comments/";
+	    var request = new XMLHttpRequest();
+	    request.open("GET", url);
+	    request.onload = function () {
+	      if (request.status === 200) {
+	        var data = JSON.parse(request.responseText);
+	        this.setState({ comments: data });
+	        this.forceUpdate();
+	      }
+	    }.bind(this);
+	    request.send(null);
+	  },
 	
 	  componentDidMount: function componentDidMount() {
 	    this.getProjects();
+	    this.getComments();
 	  },
 	
 	  handleProjectSubmit: function handleProjectSubmit(project) {
@@ -21494,6 +21508,23 @@
 	    this.getProjects();
 	  },
 	
+	  handleCommentSubmit: function handleCommentSubmit(comment) {
+	    var comments = this.state.comments;
+	    var newComment = comments.concat([comment.comment]);
+	    var url = "http://localhost:3000/api/comments";
+	    var request = new XMLHttpRequest();
+	    request.open("POST", url);
+	    request.setRequestHeader('Content-Type', 'application/json');
+	    request.onload = function () {
+	      if (request.status === 200) {
+	        var responseData = JSON.parse(request.responseText);
+	        this.setState({ comments: newEntry });
+	      }
+	    }.bind(this);
+	    request.send(JSON.stringify(comment));
+	    this.getProjects();
+	  },
+	
 	  getEntries: function getEntries(index) {
 	    var newProject = this.state.projects[index];
 	    var entries = newProject.entries.map(function (entry, index) {
@@ -21509,9 +21540,6 @@
 	
 	  setFocusEntry: function setFocusEntry(index) {
 	    console.log("set Focus entry ", this.state);
-	    // var entries = this.state.focusProject.entries.map(function(entry, index) {
-	    //   return entry;
-	    // })
 	    console.log(index);
 	    var newEntry = this.state.focusProject.entries[index];
 	    console.log("new entry", newEntry);
@@ -21562,7 +21590,8 @@
 	          entries: this.state.entries,
 	          selectEntry: this.setFocusEntry,
 	          showComments: this.showComments,
-	          commentVisibility: this.state.showComments })
+	          commentVisibility: this.state.showComments,
+	          commentRequest: this.handleCommentSubmit })
 	      )
 	    );
 	  }
@@ -21599,7 +21628,8 @@
 	        getEntries: this.props.getEntries,
 	        selectEntry: this.props.selectEntry,
 	        showComments: this.props.showComments,
-	        commentVisibility: this.props.commentVisibility })
+	        commentVisibility: this.props.commentVisibility,
+	        commentRequest: this.props.commentRequest })
 	    );
 	  }
 	});
@@ -21638,7 +21668,8 @@
 	      React.createElement(MainEntry, {
 	        entry: this.props.entry,
 	        showComments: this.props.showComments,
-	        commentVisibility: this.props.commentVisibility })
+	        commentVisibility: this.props.commentVisibility,
+	        commentRequest: this.props.commentRequest })
 	    );
 	  }
 	});
@@ -21687,7 +21718,8 @@
 	      React.createElement(CommentsButton, {
 	        entry: this.props.entry,
 	        showComments: this.props.showComments,
-	        commentVisibility: this.props.commentVisibility })
+	        commentVisibility: this.props.commentVisibility,
+	        commentRequest: this.props.commentRequest })
 	    );
 	  }
 	});
@@ -21738,7 +21770,8 @@
 	        commentVisibility: this.props.commentVisibility,
 	        comments: this.props.entry.comment,
 	        entry: this.props.entry,
-	        title: this.props.entry.title })
+	        title: this.props.entry.title,
+	        commentRequest: this.props.commentRequest })
 	    );
 	  }
 	});
@@ -21777,7 +21810,8 @@
 	    if (this.props.commentVisibility === true) return React.createElement(
 	      'div',
 	      { id: 'commentDiv' },
-	      React.createElement(CommentInput, null),
+	      React.createElement(CommentInput, {
+	        commentRequest: this.props.commentRequest }),
 	      comments
 	    );
 	    return React.createElement('div', null);
@@ -21797,10 +21831,38 @@
 	var CommentInput = React.createClass({
 	  displayName: "CommentInput",
 	
+	  getInitialState: function getInitialState() {
+	    return { author: "", comment: "" };
+	  },
+	
+	  handleAuthorChange: function handleAuthorChange(event) {
+	    this.setState({ author: event.target.value });
+	  },
+	
+	  handleTextChange: function handleTextChange(event) {
+	    this.setState({ comment: event.target.value });
+	  },
+	
+	  handleSubmit: function handleSubmit(event) {
+	    event.preventDefault();
+	    var author = this.state.author.trim();
+	    var comment = this.state.comment.trim();
+	    if (!author || !comment) {
+	      return;
+	    }
+	    this.props.commentRequest({
+	      comment: {
+	        author: author,
+	        comment: comment
+	      }
+	    });
+	    this.setState({ comment: "", author: "" });
+	  },
+	
 	  render: function render() {
 	    return React.createElement(
-	      "div",
-	      null,
+	      "form",
+	      { className: "commentForm", onSubmit: this.handleSubmit },
 	      React.createElement("input", {
 	        type: "text",
 	        placeholder: "Your name",
@@ -21810,6 +21872,10 @@
 	        type: "text",
 	        placeholder: "Say something",
 	        onChange: this.handleTextChange
+	      }),
+	      React.createElement("input", {
+	        type: "submit",
+	        value: "Submit!"
 	      })
 	    );
 	  }
@@ -22162,7 +22228,7 @@
 	  displayName: "NewEntry",
 	
 	  getInitialState: function getInitialState() {
-	    return { title: "", tagline: "", mainPhoto: "", body: "", project_id: null };
+	    return { title: "", tagline: "", mainPhoto: "", body: "", project_id: "" };
 	  },
 	
 	  handleEntryChange: function handleEntryChange(event) {
@@ -22211,7 +22277,7 @@
 	        project_id: project_id
 	      }
 	    });
-	    this.setState({ title: "", tagline: "", mainPhoto: "", body: "", project_id: null });
+	    this.setState({ title: "", tagline: "", mainPhoto: "", body: "", project_id: "" });
 	  },
 	
 	  render: function render() {
