@@ -21438,20 +21438,29 @@
 	    return { projects: [], entries: [], focusProject: null, focusEntry: null, commentVisibility: false };
 	  },
 	
-	  componentDidMount: function componentDidMount() {
+	  getProjects: function getProjects() {
+	    console.log("getRequest made");
 	    var url = "http://localhost:3000/api/projects/";
 	    var request = new XMLHttpRequest();
 	    request.open("GET", url);
 	    request.onload = function () {
 	      if (request.status === 200) {
 	        var data = JSON.parse(request.responseText);
+	        console.log(data);
 	        this.setState({ projects: data });
+	        this.forceUpdate();
 	      }
 	    }.bind(this);
 	    request.send(null);
 	  },
 	
+	
+	  componentDidMount: function componentDidMount() {
+	    this.getProjects();
+	  },
+	
 	  handleProjectSubmit: function handleProjectSubmit(project) {
+	    console.log(project);
 	    var projects = this.state.projects;
 	    var newProject = projects.concat([project.project]);
 	    var url = "http://localhost:3000/api/projects/";
@@ -21460,7 +21469,6 @@
 	    request.setRequestHeader('Content-Type', 'application/json');
 	    request.onload = function () {
 	      if (request.status === 200) {
-	        console.log("request had loaded");
 	        var responseData = JSON.parse(request.responseText);
 	        this.setState({ projects: newProject });
 	      }
@@ -21468,9 +21476,26 @@
 	    request.send(JSON.stringify(project));
 	  },
 	
+	  handleEntrySubmit: function handleEntrySubmit(entry) {
+	    console.log(entry);
+	    var entries = this.state.entries;
+	    var newEntry = entries.concat([entry.entry]);
+	    var url = "http://localhost:3000/api/entries";
+	    var request = new XMLHttpRequest();
+	    request.open("POST", url);
+	    request.setRequestHeader('Content-Type', 'application/json');
+	    request.onload = function () {
+	      if (request.status === 200) {
+	        var responseData = JSON.parse(request.responseText);
+	        this.setState({ entries: newEntry });
+	      }
+	    }.bind(this);
+	    request.send(JSON.stringify(entry));
+	    this.getProjects();
+	  },
+	
 	  getEntries: function getEntries(index) {
 	    var newProject = this.state.projects[index];
-	    if (!this.newProject.entries) return React.createElement('div', null);
 	    var entries = newProject.entries.map(function (entry, index) {
 	      return entry;
 	    });
@@ -21483,10 +21508,14 @@
 	  },
 	
 	  setFocusEntry: function setFocusEntry(index) {
-	    var entries = this.state.focusProject.entries.map(function (entry, index) {
-	      return entry;
-	    });
-	    var newEntry = entries[index];
+	    console.log("set Focus entry ", this.state);
+	    // var entries = this.state.focusProject.entries.map(function(entry, index) {
+	    //   return entry;
+	    // })
+	    console.log(index);
+	    var newEntry = this.state.focusProject.entries[index];
+	    console.log("new entry", newEntry);
+	
 	    this.setState({ focusEntry: newEntry });
 	  },
 	
@@ -21525,7 +21554,8 @@
 	          entry: this.state.focusEntry,
 	          selectProject: this.setFocusProject,
 	          getEntries: this.getEntries,
-	          postRequest: this.handleProjectSubmit }),
+	          postRequest: this.handleProjectSubmit,
+	          entryRequest: this.handleEntrySubmit }),
 	        React.createElement(DisplayBox, {
 	          project: this.state.focusProject,
 	          entry: this.state.focusEntry,
@@ -21821,40 +21851,34 @@
 	var React = __webpack_require__(1);
 	var ProjectSelector = __webpack_require__(181);
 	var NewProject = __webpack_require__(182);
+	var NewEntry = __webpack_require__(183);
 	
 	var OptionsBox = React.createClass({
 	  displayName: 'OptionsBox',
 	
 	  getInitialState: function getInitialState() {
-	    return { newProject: false, newEntry: false, editProject: false };
+	    return { newProject: null, newEntry: null, editProject: null };
 	  },
 	
 	  newProjectClick: function newProjectClick(event) {
+	    this.setState({ newEntry: false });
+	    this.setState({ editProject: false });
 	    this.setState({ newProject: true });
-	    if (this.state.newEntry || this.state.editProject === true) {
-	      this.setState({ newEntry: false });
-	      this.setState({ editProject: false });
-	    }
 	  },
 	
 	  newEntryClick: function newEntryClick(event) {
+	    this.setState({ newProject: false });
+	    this.setState({ editProject: false });
 	    this.setState({ newEntry: true });
-	    if (this.state.newProject || this.state.editProject === true) {
-	      this.setState({ newProject: false });
-	      this.setState({ editProject: false });
-	    }
 	  },
 	
 	  editProjectClick: function editProjectClick(event) {
+	    this.setState({ newProject: false });
+	    this.setState({ newEntry: false });
 	    this.setState({ editProject: true });
-	    if (this.state.newProject || this.state.newEntry === true) {
-	      this.setState({ newProject: false });
-	      this.setState({ newEntry: false });
-	    }
 	  },
 	
 	  render: function render() {
-	    console.log(this.state);
 	    if (this.state.newProject === true) {
 	      return React.createElement(
 	        'div',
@@ -21924,8 +21948,10 @@
 	          'Edit project'
 	        )
 	      ),
-	      React.createElement(NewProject, {
-	        postRequest: this.props.postRequest })
+	      React.createElement(NewEntry, {
+	        postRequest: this.props.postRequest,
+	        entryRequest: this.props.entryRequest,
+	        project: this.props.project })
 	    );
 	    if (this.state.editProject === true) return React.createElement(
 	      'div',
@@ -21936,7 +21962,6 @@
 	        'Select a project from the dropdown, or choose one of the options below'
 	      ),
 	      React.createElement(ProjectSelector, {
-	        projects: this.props.projects,
 	        selectProject: this.props.selectProject,
 	        getEntries: this.props.getEntries }),
 	      React.createElement('button', { id: 'deleteProject' }),
@@ -21960,8 +21985,9 @@
 	        )
 	      ),
 	      React.createElement(NewEntry, {
-	        postRequest: this.props.postRequest })
+	        entryRequest: this.props.entryRequest })
 	    );
+	    console.log("hi");
 	    return React.createElement(
 	      'div',
 	      { id: 'sidebar' },
@@ -22086,8 +22112,8 @@
 	    this.props.postRequest({
 	      project: {
 	        title: title,
-	        author: author,
-	        summary: summary
+	        summary: summary,
+	        author: author
 	      }
 	    });
 	    this.setState({ title: "", author: "", summary: "" });
@@ -22123,6 +22149,107 @@
 	});
 	
 	module.exports = NewProject;
+
+/***/ },
+/* 183 */
+/***/ function(module, exports, __webpack_require__) {
+
+	"use strict";
+	
+	var React = __webpack_require__(1);
+	
+	var NewEntry = React.createClass({
+	  displayName: "NewEntry",
+	
+	  getInitialState: function getInitialState() {
+	    return { title: "", tagline: "", mainPhoto: "", body: "", project_id: null };
+	  },
+	
+	  handleEntryChange: function handleEntryChange(event) {
+	    this.setState({ title: event.target.value });
+	  },
+	
+	  handleTaglineChange: function handleTaglineChange(event) {
+	    this.setState({ tagline: event.target.value });
+	  },
+	
+	  handleMainPhotoChange: function handleMainPhotoChange(event) {
+	    this.setState({ mainPhoto: event.target.value });
+	  },
+	
+	  handleBodyChange: function handleBodyChange(event) {
+	    this.setState({ body: event.target.value });
+	  },
+	
+	  // createEntryObject: function() {
+	  //   console.log(this.props.project.id)
+	  //   var title = this.state.title.trim();
+	  //   var tagline = this.state.tagline.trim();
+	  //   var mainPhoto = this.state.mainPhoto.trim();
+	  //   var body = this.state.body.trim();
+	  //   var project_id = this.props.project.id
+	  //   return {entries: [{title: title, tagline: tagline, mainPhoto: mainPhoto, body: body, project_id: project_id, photo: []}]}
+	  // },
+	
+	  handleSubmit: function handleSubmit(event) {
+	    event.preventDefault();
+	    var title = this.state.title.trim();
+	    var tagline = this.state.tagline.trim();
+	    var mainPhoto = this.state.mainPhoto.trim();
+	    var body = this.state.body.trim();
+	    var project_id = this.props.project.id;
+	    console.log(this.props.project.id);
+	    if (!title || !tagline || !mainPhoto || !body) {
+	      return;
+	    }
+	    this.props.entryRequest({
+	      entry: {
+	        title: title,
+	        tagline: tagline,
+	        mainPhoto: mainPhoto,
+	        body: body,
+	        project_id: project_id
+	      }
+	    });
+	    this.setState({ title: "", tagline: "", mainPhoto: "", body: "", project_id: null });
+	  },
+	
+	  render: function render() {
+	    return React.createElement(
+	      "div",
+	      null,
+	      React.createElement(
+	        "form",
+	        { className: "entryForm", onSubmit: this.handleSubmit },
+	        React.createElement("input", {
+	          type: "text",
+	          placeholder: "Entry title",
+	          onChange: this.handleEntryChange
+	        }),
+	        React.createElement("input", {
+	          type: "text",
+	          placeholder: "Enter a FUN tagline here",
+	          onChange: this.handleTaglineChange
+	        }),
+	        React.createElement("input", {
+	          type: "text",
+	          placeholder: "Put a link to your main image here",
+	          onChange: this.handleMainPhotoChange }),
+	        React.createElement("input", {
+	          type: "text",
+	          placeholder: "Stick your text here",
+	          onChange: this.handleBodyChange
+	        }),
+	        React.createElement("input", {
+	          type: "submit",
+	          value: "GO!"
+	        })
+	      )
+	    );
+	  }
+	});
+	
+	module.exports = NewEntry;
 
 /***/ }
 /******/ ]);

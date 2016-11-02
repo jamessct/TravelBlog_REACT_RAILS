@@ -2,9 +2,7 @@ var React = require('react')
 
 var NewEntry = React.createClass({
   getInitialState: function() {
-    return {, title: "", tagline: "", mainPhoto: "", body: ""}
-
-    //{title: "", tagline: "", mainImage: "", body: ""}
+    return {title: "", tagline: "", mainPhoto: "", body: "", project_id: null}
   },
 
   handleEntryChange: function(event) {
@@ -23,18 +21,44 @@ var NewEntry = React.createClass({
     this.setState({body: event.target.value})
   },
 
-  createEntryObject: function() {
-
-  },
+  // createEntryObject: function() {
+  //   console.log(this.props.project.id)
+  //   var title = this.state.title.trim();
+  //   var tagline = this.state.tagline.trim();
+  //   var mainPhoto = this.state.mainPhoto.trim();
+  //   var body = this.state.body.trim();
+  //   var project_id = this.props.project.id
+  //   return {entries: [{title: title, tagline: tagline, mainPhoto: mainPhoto, body: body, project_id: project_id, photo: []}]}
+  // },
 
   handleSubmit: function(event) {
-    createEntryObject();
+    event.preventDefault();
+    var title = this.state.title.trim();
+    var tagline = this.state.tagline.trim();
+    var mainPhoto = this.state.mainPhoto.trim();
+    var body = this.state.body.trim();
+    var project_id = this.props.project.id;
+    console.log(this.props.project.id)
+    if(!title || !tagline || !mainPhoto || !body) {
+      return;
+    }
+    this.props.entryRequest({
+      entry: {
+        title: title,
+        tagline: tagline,
+        mainPhoto: mainPhoto,
+        body: body,
+        project_id: project_id
+      }
+    });
+    this.setState({title: "", tagline: "", mainPhoto: "", body: "", project_id: null})
   },
 
   render: function() {
-    return (
+      return (
       <div>
         <form className="entryForm" onSubmit={this.handleSubmit}>
+
           <input 
             type="text" 
             placeholder="Entry title" 
@@ -50,7 +74,7 @@ var NewEntry = React.createClass({
           <input
             type="text"
             placeholder="Put a link to your main image here"
-            onChage={this.handleMainPhotoChange}/>
+            onChange={this.handleMainPhotoChange}/>
 
           <input
             type="text"

@@ -1,38 +1,32 @@
 var React = require('react');
 var ProjectSelector = require('./ProjectSelector.jsx');
 var NewProject = require('./NewProject.jsx');
+var NewEntry = require('./NewEntry.jsx');
 
 var OptionsBox = React.createClass({
   getInitialState: function() {
-    return ({newProject: false, newEntry: false, editProject: false})
+    return ({newProject: null, newEntry: null, editProject: null})
   },
 
   newProjectClick: function(event) {
-    this.setState({newProject: true})
-    if(this.state.newEntry || this.state.editProject === true) {
-      this.setState({newEntry: false});
-      this.setState({editProject: false});
-    }
+    this.setState({newEntry: false});
+    this.setState({editProject: false});
+    this.setState({newProject: true});
   },
 
   newEntryClick: function(event) {
-    this.setState({newEntry: true})
-    if(this.state.newProject || this.state.editProject === true) {
-      this.setState({newProject: false});
-      this.setState({editProject: false});
-    }
+    this.setState({newProject: false});
+    this.setState({editProject: false});
+    this.setState({newEntry: true});
   },
 
   editProjectClick: function(event) {
-    this.setState({editProject: true})
-    if(this.state.newProject || this.state.newEntry === true) {
-      this.setState({newProject: false});
-      this.setState({newEntry: false});
-    }
+    this.setState({newProject: false});
+    this.setState({newEntry: false});
+    this.setState({editProject: true});
   },
 
   render: function() {
-    console.log(this.state)
     if(this.state.newProject === true) {
       return(
         <div id="sidebar">
@@ -70,8 +64,11 @@ var OptionsBox = React.createClass({
           <button id="addNewEntry" onClick={this.newEntryClick}>Add new entry</button>
           <button id="editProject" onClick={this.editProjectClick}>Edit project</button>
         </div>
-        <NewProject
-          postRequest={this.props.postRequest}></NewProject>
+        <NewEntry
+          postRequest={this.props.postRequest}
+          entryRequest={this.props.entryRequest}
+          project={this.props.project}>
+        </NewEntry>
       </div>
       )
       if(this.state.editProject === true)
@@ -79,7 +76,6 @@ var OptionsBox = React.createClass({
         <div id="sidebar">
           <h4>Select a project from the dropdown, or choose one of the options below</h4>
           <ProjectSelector 
-            projects={this.props.projects}
             selectProject={this.props.selectProject}
             getEntries={this.props.getEntries}>
           </ProjectSelector>
@@ -91,9 +87,10 @@ var OptionsBox = React.createClass({
             <button id="editProject" onClick={this.editProjectClick}>Edit project</button>
           </div>
           <NewEntry
-            postRequest={this.props.postRequest}></NewEntry>
+            entryRequest={this.props.entryRequest}></NewEntry>
         </div>
       )
+      console.log("hi")
       return (
         <div id="sidebar">
           <h4>Select a project from the dropdown, or choose one of the options below</h4>

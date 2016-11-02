@@ -1,12 +1,12 @@
 class ProjectsController < ApplicationController
   def index
     projects = Project.all
-    render :json => projects.as_json(include: [:entries => { include: [:photo, :comment]}]) 
+    render :json => projects.as_json(include: [:entries => { include: [:photo, :comment], except: [:updated_at, :created_at]}], except: [:updated_at, :created_at]) 
   end
 
   def show
-    project = Projects.find(params[:id])
-    render :json => project.as_json(include: [:entries => { include: [:text => {include: [:comment]}]}])
+    project = Project.find(params[:id])
+    render :json => project.as_json(include: [:entries ])
   end
 
   def create
@@ -33,6 +33,6 @@ class ProjectsController < ApplicationController
   end
 
   def project_params
-    params.require(:project).permit([:title, :summary])
+    params.require(:project).permit([:title, :summary, :author])
   end
 end

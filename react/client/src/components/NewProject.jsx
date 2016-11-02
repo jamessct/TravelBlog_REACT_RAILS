@@ -30,8 +30,8 @@ var NewProject = React.createClass({
     this.props.postRequest({
       project: {
         title: title,
-        author: author,
-        summary: summary
+        summary: summary,
+        author: author
       }
     });
     this.setState({title: "", author: "", summary: ""})

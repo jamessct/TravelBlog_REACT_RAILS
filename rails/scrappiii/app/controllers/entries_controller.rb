@@ -1,4 +1,9 @@
 class EntriesController < ApplicationController
+  def index
+    entries = Entry.all
+    render :json => entries.as_json(include: [:photo, :comment]) 
+  end
+
   def create
     entry = Entry.create(entry_params)
     render :json => entry
@@ -24,6 +29,8 @@ class EntriesController < ApplicationController
 
   private
   def entry_params
-    params.require(:entry).permit([:title, :author])
+    params.require(:entry).permit([:title, :project_id, :body, :tagline, :mainPhoto])
   end
 end
+
+[:title, :project, :body, :tagline, :mainPhoto]

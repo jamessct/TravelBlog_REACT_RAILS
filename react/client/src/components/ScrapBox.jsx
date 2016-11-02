@@ -6,21 +6,29 @@ var ScrapBox = React.createClass({
   getInitialState: function() {
     return {projects: [], entries: [], focusProject: null, focusEntry: null, commentVisibility: false}
   },
-
-  componentDidMount: function() {
+  
+  getProjects(){
+    console.log("getRequest made")
     var url = "http://localhost:3000/api/projects/";
     var request = new XMLHttpRequest();
     request.open( "GET", url );
     request.onload = function() {
       if( request.status === 200 ) {
         var data = JSON.parse(request.responseText);
+        console.log(data)
         this.setState({projects: data});
+        this.forceUpdate()
       }
     }.bind(this);
     request.send(null);
   },
 
+  componentDidMount: function() {
+    this.getProjects()
+  },
+
   handleProjectSubmit: function(project) {
+    console.log(project)
     var projects = this.state.projects;
     var newProject = projects.concat([project.project])
     var url = "http://localhost:3000/api/projects/";
@@ -29,7 +37,6 @@ var ScrapBox = React.createClass({
     request.setRequestHeader('Content-Type', 'application/json');
     request.onload = function() {
       if( request.status === 200 ) {
-        console.log("request had loaded");
         var responseData = JSON.parse(request.responseText);
         this.setState({projects: newProject});
       }
@@ -37,10 +44,26 @@ var ScrapBox = React.createClass({
     request.send(JSON.stringify(project));
   },
 
+  handleEntrySubmit: function(entry) {
+    console.log(entry)
+    var entries = this.state.entries;
+    var newEntry = entries.concat([entry.entry])
+    var url = "http://localhost:3000/api/entries";
+    var request = new XMLHttpRequest();
+    request.open( "POST", url );
+    request.setRequestHeader('Content-Type', 'application/json');
+    request.onload = function() {
+      if( request.status === 200 ) {
+        var responseData = JSON.parse(request.responseText);
+        this.setState({entries: newEntry});
+      }
+    }.bind(this);
+    request.send(JSON.stringify(entry));
+    this.getProjects()
+  },
 
   getEntries: function(index) {
     var newProject = this.state.projects[index];
-    if(!this.newProject.entries) return <div></div>;
     var entries = newProject.entries.map(function(entry, index) {
       return entry;
     })
@@ -53,10 +76,14 @@ var ScrapBox = React.createClass({
   },
 
   setFocusEntry: function(index) {
-    var entries = this.state.focusProject.entries.map(function(entry, index) {
-      return entry;
-    })
-    var newEntry = entries[index];
+    console.log("set Focus entry ", this.state)
+    // var entries = this.state.focusProject.entries.map(function(entry, index) {
+    //   return entry;
+    // })
+    console.log(index)
+    var newEntry = this.state.focusProject.entries[index];
+    console.log("new entry", newEntry)
+
     this.setState({focusEntry: newEntry});
   },
 
@@ -80,7 +107,8 @@ var ScrapBox = React.createClass({
             entry={this.state.focusEntry}
             selectProject={this.setFocusProject}
             getEntries={this.getEntries}
-            postRequest={this.handleProjectSubmit}>
+            postRequest={this.handleProjectSubmit}
+            entryRequest={this.handleEntrySubmit}>
           </OptionsBox>
           <DisplayBox 
             project={this.state.focusProject}
