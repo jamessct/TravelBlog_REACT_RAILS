@@ -31,7 +31,6 @@ var ScrapBox = React.createClass({
       if( request.status === 200 ) {
         console.log("request had loaded");
         var responseData = JSON.parse(request.responseText);
-        console.log(this.state.projets);
         this.setState({projects: newProject});
       }
     }.bind(this);
@@ -41,6 +40,7 @@ var ScrapBox = React.createClass({
 
   getEntries: function(index) {
     var newProject = this.state.projects[index];
+    if(!this.newProject.entries) return <div></div>;
     var entries = newProject.entries.map(function(entry, index) {
       return entry;
     })

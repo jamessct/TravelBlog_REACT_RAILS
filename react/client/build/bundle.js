@@ -21462,7 +21462,6 @@
 	      if (request.status === 200) {
 	        console.log("request had loaded");
 	        var responseData = JSON.parse(request.responseText);
-	        console.log(this.state.projets);
 	        this.setState({ projects: newProject });
 	      }
 	    }.bind(this);
@@ -21471,6 +21470,7 @@
 	
 	  getEntries: function getEntries(index) {
 	    var newProject = this.state.projects[index];
+	    if (!this.newProject.entries) return React.createElement('div', null);
 	    var entries = newProject.entries.map(function (entry, index) {
 	      return entry;
 	    });
@@ -21825,7 +21825,143 @@
 	var OptionsBox = React.createClass({
 	  displayName: 'OptionsBox',
 	
+	  getInitialState: function getInitialState() {
+	    return { newProject: false, newEntry: false, editProject: false };
+	  },
+	
+	  newProjectClick: function newProjectClick(event) {
+	    this.setState({ newProject: true });
+	    if (this.state.newEntry || this.state.editProject === true) {
+	      this.setState({ newEntry: false });
+	      this.setState({ editProject: false });
+	    }
+	  },
+	
+	  newEntryClick: function newEntryClick(event) {
+	    this.setState({ newEntry: true });
+	    if (this.state.newProject || this.state.editProject === true) {
+	      this.setState({ newProject: false });
+	      this.setState({ editProject: false });
+	    }
+	  },
+	
+	  editProjectClick: function editProjectClick(event) {
+	    this.setState({ editProject: true });
+	    if (this.state.newProject || this.state.newEntry === true) {
+	      this.setState({ newProject: false });
+	      this.setState({ newEntry: false });
+	    }
+	  },
+	
 	  render: function render() {
+	    console.log(this.state);
+	    if (this.state.newProject === true) {
+	      return React.createElement(
+	        'div',
+	        { id: 'sidebar' },
+	        React.createElement(
+	          'h4',
+	          null,
+	          'Select a project from the dropdown, or choose one of the options below'
+	        ),
+	        React.createElement(ProjectSelector, {
+	          projects: this.props.projects,
+	          selectProject: this.props.selectProject,
+	          getEntries: this.props.getEntries }),
+	        React.createElement('button', { id: 'deleteProject' }),
+	        React.createElement(
+	          'div',
+	          { id: 'optionButtons' },
+	          React.createElement(
+	            'button',
+	            { id: 'NewProject', onClick: this.newProjectClick },
+	            'Add new project'
+	          ),
+	          React.createElement(
+	            'button',
+	            { id: 'addNewEntry', onClick: this.newEntryClick },
+	            'Add new entry'
+	          ),
+	          React.createElement(
+	            'button',
+	            { id: 'editProject', onClick: this.editProjectClick },
+	            'Edit project'
+	          )
+	        ),
+	        React.createElement(NewProject, {
+	          postRequest: this.props.postRequest })
+	      );
+	    }
+	    if (this.state.newEntry === true) return React.createElement(
+	      'div',
+	      { id: 'sidebar' },
+	      React.createElement(
+	        'h4',
+	        null,
+	        'Select a project from the dropdown, or choose one of the options below'
+	      ),
+	      React.createElement(ProjectSelector, {
+	        projects: this.props.projects,
+	        selectProject: this.props.selectProject,
+	        getEntries: this.props.getEntries }),
+	      React.createElement('button', { id: 'deleteProject' }),
+	      React.createElement(
+	        'div',
+	        { id: 'optionButtons' },
+	        React.createElement(
+	          'button',
+	          { id: 'NewProject', onClick: this.newProjectClick },
+	          'Add new project'
+	        ),
+	        React.createElement(
+	          'button',
+	          { id: 'addNewEntry', onClick: this.newEntryClick },
+	          'Add new entry'
+	        ),
+	        React.createElement(
+	          'button',
+	          { id: 'editProject', onClick: this.editProjectClick },
+	          'Edit project'
+	        )
+	      ),
+	      React.createElement(NewProject, {
+	        postRequest: this.props.postRequest })
+	    );
+	    if (this.state.editProject === true) return React.createElement(
+	      'div',
+	      { id: 'sidebar' },
+	      React.createElement(
+	        'h4',
+	        null,
+	        'Select a project from the dropdown, or choose one of the options below'
+	      ),
+	      React.createElement(ProjectSelector, {
+	        projects: this.props.projects,
+	        selectProject: this.props.selectProject,
+	        getEntries: this.props.getEntries }),
+	      React.createElement('button', { id: 'deleteProject' }),
+	      React.createElement(
+	        'div',
+	        { id: 'optionButtons' },
+	        React.createElement(
+	          'button',
+	          { id: 'NewProject', onClick: this.newProjectClick },
+	          'Add new project'
+	        ),
+	        React.createElement(
+	          'button',
+	          { id: 'addNewEntry', onClick: this.newEntryClick },
+	          'Add new entry'
+	        ),
+	        React.createElement(
+	          'button',
+	          { id: 'editProject', onClick: this.editProjectClick },
+	          'Edit project'
+	        )
+	      ),
+	      React.createElement(NewEntry, {
+	        postRequest: this.props.postRequest })
+	    );
 	    return React.createElement(
 	      'div',
 	      { id: 'sidebar' },
@@ -21838,12 +21974,26 @@
 	        projects: this.props.projects,
 	        selectProject: this.props.selectProject,
 	        getEntries: this.props.getEntries }),
-	      React.createElement('button', { id: 'viewProject' }),
-	      React.createElement('button', { id: 'editProject' }),
-	      React.createElement('button', { id: 'NewProject' }),
-	      React.createElement('button', { id: 'addNewEntry' }),
 	      React.createElement('button', { id: 'deleteProject' }),
-	      React.createElement(NewProject, null)
+	      React.createElement(
+	        'div',
+	        { id: 'optionButtons' },
+	        React.createElement(
+	          'button',
+	          { id: 'NewProject', onClick: this.newProjectClick },
+	          'Add new project'
+	        ),
+	        React.createElement(
+	          'button',
+	          { id: 'addNewEntry', onClick: this.newEntryClick },
+	          'Add new entry'
+	        ),
+	        React.createElement(
+	          'button',
+	          { id: 'editProject', onClick: this.editProjectClick },
+	          'Edit project'
+	        )
+	      )
 	    );
 	  }
 	});
@@ -21928,15 +22078,12 @@
 	    var title = this.state.title.trim();
 	    var author = this.state.author.trim();
 	    var summary = this.state.summary.trim();
-	    if (!name || !author || !summary) {
-	      return React.createElement(
-	        "p",
-	        null,
-	        "Please fill out all fields"
-	      );
+	    console.log("hi");
+	    if (!title || !author || !summary) {
+	      return;
 	    }
 	    console.log("is there anybody out there?");
-	    this.props.onProjectSubmit({
+	    this.props.postRequest({
 	      project: {
 	        title: title,
 	        author: author,
@@ -21947,6 +22094,7 @@
 	  },
 	
 	  render: function render() {
+	    console.log(this.state.title);
 	    return React.createElement(
 	      "form",
 	      { className: "projectForm", onSubmit: this.handleSubmit },
@@ -21968,6 +22116,7 @@
 	      React.createElement("input", {
 	        type: "submit",
 	        value: "GO!"
+	
 	      })
 	    );
 	  }

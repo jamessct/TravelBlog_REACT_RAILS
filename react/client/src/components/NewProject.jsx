@@ -22,11 +22,12 @@ var NewProject = React.createClass({
     var title = this.state.title.trim();
     var author = this.state.author.trim();
     var summary = this.state.summary.trim();
-    if (!name || !author || !summary) {
-      return <p>Please fill out all fields</p>;
+    console.log("hi")
+    if (!title || !author || !summary) {
+      return;
     }
     console.log("is there anybody out there?")
-    this.props.onProjectSubmit({
+    this.props.postRequest({
       project: {
         title: title,
         author: author,
@@ -37,6 +38,7 @@ var NewProject = React.createClass({
   },
 
   render: function() {
+    console.log(this.state.title)
     return (
       <form className="projectForm" onSubmit={this.handleSubmit}>
         <input 
@@ -60,6 +62,7 @@ var NewProject = React.createClass({
         <input 
           type="submit"
           value="GO!"
+          
         />
       </form>
 
