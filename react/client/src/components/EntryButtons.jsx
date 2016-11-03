@@ -14,7 +14,9 @@ var EntryButtons = React.createClass({
     }.bind(this))
     return (
       <div id="entryButtonsContainer">
+        <div id="entryButtonsDiv">
         {buttons}
+        </div>
         <MainEntry 
           entry={this.props.entry}
           showComments={this.props.showComments}

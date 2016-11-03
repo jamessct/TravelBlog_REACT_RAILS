@@ -7,7 +7,7 @@ var DisplayBox = React.createClass({
       return <div id="display"></div>
     return (
       <div id="display">
-        <h2 id="projectTitle">{this.props.project.title}</h2>
+        <h2 id="projectTitle"><i>{this.props.project.title}</i>, by {this.props.project.author}</h2>
         <EntryButtons
           project={this.props.project}
           entry={this.props.entry}

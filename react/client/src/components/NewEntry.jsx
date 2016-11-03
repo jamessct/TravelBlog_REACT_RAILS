@@ -56,7 +56,7 @@ var NewEntry = React.createClass({
 
   render: function() {
       return (
-      <div>
+      <div id="addNewEntry">
         <form className="entryForm" onSubmit={this.handleSubmit}>
 
           <input 
@@ -83,6 +83,7 @@ var NewEntry = React.createClass({
           />
 
           <input 
+            id="go"
             type="submit"
             value="GO!"  
           />

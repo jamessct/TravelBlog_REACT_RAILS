@@ -2,7 +2,7 @@ var React = require('react');
 
 var CommentInput = React.createClass({
   getInitialState:function() {
-    return {author: "", comment: ""}
+    return {author: "", comment: "", entry_id: ""}
   },
 
   handleAuthorChange: function(event) {
@@ -17,16 +17,18 @@ var CommentInput = React.createClass({
     event.preventDefault();
     var author = this.state.author.trim();
     var comment = this.state.comment.trim();
-    if(!author || !comment) {
+    var entry_id = this.props.entry.id;
+    if(!author || !comment || !entry_id) {
       return;
     }
     this.props.commentRequest({
       comment: {
         author: author,
-        comment: comment
+        comment: comment,
+        entry_id: entry_id
       }
     });
-    this.setState({comment: "", author: ""})
+    this.setState({comment: "", author: "", entry_id: ""})
   },
 
   render: function() {

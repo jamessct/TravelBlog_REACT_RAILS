@@ -15,7 +15,8 @@ var CommentsList = React.createClass({
       return (
         <div id="commentDiv">
           <CommentInput
-            commentRequest={this.props.commentRequest}></CommentInput>
+            commentRequest={this.props.commentRequest}
+            entry={this.props.entry}></CommentInput>
           {comments}
         </div>
       )

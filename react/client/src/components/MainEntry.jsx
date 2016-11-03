@@ -5,12 +5,12 @@ var Photos = require('./Photos.jsx');
 var MainEntry = React.createClass({
   render: function() {
     if(!this.props.entry) return <div></div>
-    var title = <h2>{this.props.entry.title}</h2>
-    var tagline = <h4>{this.props.entry.tagline}</h4>
+    var title = <h2 id="someText"><b>{this.props.entry.title}</b></h2>
+    var tagline = <h3 id="someText">{this.props.entry.tagline}</h3>
     var mainPhoto = <img id="mainPhoto" src={this.props.entry.mainPhoto}></img>
-    var text = <p>{this.props.entry.body}</p>
+    var text = <p id="body">{this.props.entry.body}</p>
     return (
-      <div>
+      <div id="mainBlog">
         {title}
         {tagline}
         {mainPhoto}

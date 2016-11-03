@@ -30,18 +30,18 @@ var OptionsBox = React.createClass({
     if(this.state.newProject === true) {
       return(
         <div id="sidebar">
-          <h4>Select a project from the dropdown, or choose one of the options below</h4>
+          <h2 id="options">Options</h2>
           <ProjectSelector 
             projects={this.props.projects}
             selectProject={this.props.selectProject}
             getEntries={this.props.getEntries}>
           </ProjectSelector>
-          <button id="deleteProject"></button>
 
           <div id="optionButtons">
-            <button id="NewProject" onClick={this.newProjectClick}>Add new project</button>
-            <button id="addNewEntry" onClick={this.newEntryClick}>Add new entry</button>
+            <button id="newProject" onClick={this.newProjectClick}>Add new project</button>
+            <button id="newEntry" onClick={this.newEntryClick}>Add new entry</button>
             <button id="editProject" onClick={this.editProjectClick}>Edit project</button>
+            <button id="deleteProject">Delete Project</button>
           </div>
         <NewProject
           postRequest={this.props.postRequest}></NewProject>
@@ -51,18 +51,18 @@ var OptionsBox = React.createClass({
     if(this.state.newEntry === true)
     return (
       <div id="sidebar">
-        <h4>Select a project from the dropdown, or choose one of the options below</h4>
+        <h2 id="options">Options</h2>
         <ProjectSelector 
           projects={this.props.projects}
           selectProject={this.props.selectProject}
           getEntries={this.props.getEntries}>
         </ProjectSelector>
-        <button id="deleteProject"></button>
 
         <div id="optionButtons">
-          <button id="NewProject" onClick={this.newProjectClick}>Add new project</button>
-          <button id="addNewEntry" onClick={this.newEntryClick}>Add new entry</button>
+          <button id="newProject" onClick={this.newProjectClick}>Add new project</button>
+          <button id="newEntry" onClick={this.newEntryClick}>Add new entry</button>
           <button id="editProject" onClick={this.editProjectClick}>Edit project</button>
+          <button id="deleteProject">Delete</button>
         </div>
         <NewEntry
           postRequest={this.props.postRequest}
@@ -74,17 +74,17 @@ var OptionsBox = React.createClass({
       if(this.state.editProject === true)
       return (
         <div id="sidebar">
-          <h4>Select a project from the dropdown, or choose one of the options below</h4>
+          <h2 id="options">Options</h2>
           <ProjectSelector 
             selectProject={this.props.selectProject}
             getEntries={this.props.getEntries}>
           </ProjectSelector>
-          <button id="deleteProject"></button>
 
           <div id="optionButtons">
-            <button id="NewProject" onClick={this.newProjectClick}>Add new project</button>
+            <button id="newProject" onClick={this.newProjectClick}>Add new project</button>
             <button id="addNewEntry" onClick={this.newEntryClick}>Add new entry</button>
             <button id="editProject" onClick={this.editProjectClick}>Edit project</button>
+            <button id="deleteProject">Delete</button>
           </div>
           <NewEntry
             entryRequest={this.props.entryRequest}></NewEntry>
@@ -93,18 +93,18 @@ var OptionsBox = React.createClass({
       console.log("hi")
       return (
         <div id="sidebar">
-          <h4>Select a project from the dropdown, or choose one of the options below</h4>
+          <h2 id="options">Options</h2>
           <ProjectSelector 
             projects={this.props.projects}
             selectProject={this.props.selectProject}
             getEntries={this.props.getEntries}>
           </ProjectSelector>
-          <button id="deleteProject"></button>
 
           <div id="optionButtons">
-            <button id="NewProject" onClick={this.newProjectClick}>Add new project</button>
-            <button id="addNewEntry" onClick={this.newEntryClick}>Add new entry</button>
+            <button id="newProject" onClick={this.newProjectClick}>Add new project</button>
+            <button id="newEntry" onClick={this.newEntryClick}>Add new entry</button>
             <button id="editProject" onClick={this.editProjectClick}>Edit project</button>
+            <button id="deleteProject">Delete Project</button>
           </div>
         </div>
       )

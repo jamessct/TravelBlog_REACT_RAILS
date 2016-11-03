@@ -74,7 +74,8 @@ var ScrapBox = React.createClass({
       }
     }.bind(this);
     request.send(JSON.stringify(entry));
-    this.getProjects()
+    this.getProjects();
+    location.reload();
   },
 
   handleCommentSubmit: function(comment) {
@@ -87,11 +88,13 @@ var ScrapBox = React.createClass({
     request.onload = function() {
       if( request.status === 200 ) {
         var responseData = JSON.parse(request.responseText);
-        this.setState({comments: newEntry});
+        this.setState({comments: newComment});
       }
     }.bind(this);
     request.send(JSON.stringify(comment));
-    this.getProjects()
+    this.getProjects();
+    this.getComments();
+    location.reload();
   },
 
   getEntries: function(index) {
@@ -125,8 +128,8 @@ var ScrapBox = React.createClass({
       <div>
         <div id="logoContainer">
           <div id="logo">
-            <h1 id="title">scrappiii</h1>
-            <h4 id="tagline">your digital scrapbook for creative projects</h4>
+            <h1 id="title">trippii</h1>
+            <h4 id="tagline">for all your travel blog related requirements</h4>
           </div>
         </div>
         <div id="container">

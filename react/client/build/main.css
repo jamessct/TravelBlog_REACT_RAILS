@@ -5,7 +5,7 @@ body {
 
 #sidebar {
   border-style: none;
-  background-color: rgba(76, 143, 184, 0.54);
+  background-color: rgba(76, 143, 184, 0.7);
   height: 600px;
   width: 320px;
   border-radius: 1%;
@@ -16,7 +16,7 @@ body {
 
 #display {
   border-style: none;
-  background-color: rgba(76, 143, 184, 0.54);
+  background-color: rgba(76, 143, 184, 0.7);
   height: 600px;
   width: 915px;
   border-radius: 1%;
@@ -35,10 +35,10 @@ body {
   margin-left: 0px;
   margin-right: 0px;
   border-style: none;
-  border-color: #383A3F;
+  border-color: #e1eef6;
   width: 30%;
   height: 85px;
-  background-color: rgba(76, 143, 184, 0.54);
+  background-color: rgba(76, 143, 184, 0.7);
   border-radius: 20%;
   display: flex;
   flex-direction: column;
@@ -52,7 +52,9 @@ body {
 }
 
 #title {
-  color: #383A3F;
+  color: #f6ea8c;
+  font-family: arial;
+  font-size: 45px;
   margin-top: 0%;
   margin-bottom: 0%;
   display: flex;
@@ -60,33 +62,43 @@ body {
 }
 
 #tagline {
-  color: #383A3F;
+  color: #e1eef6;
+  font-family: arial;
   display: flex;
   justify-content: center;
 }
 
 #projectTitle {
-  color: #383A3F;
+  font-family: arial;
+  color: #f6ea8c;
+  font-size:30px;
   height: 30px;
   margin-top: 10px;
   margin-bottom: 10px;
+  margin-left: 20px;
 }
 
 #entryButton {
   margin-top: 0%;
   margin-bottom: 0px;
   height: 20px;
+  background-color: #f6ea8c;
 }
 
 #entryButtonsContainer {
+  margin-left: 20px;
   height: 20px;
+}
+
+#entryButtonDiv {
   position: flex;
-  align-items: row;
+  align-items: space-around;
+  margin-left: 20px;
 }
 
 #mainPhoto {
-  height: 60px;
-  width: 80px;
+  height: 200px;
+  width: 300px;
 }
 
 #photos {
@@ -101,14 +113,14 @@ body {
 }
 
 #showComments {
-  color: #30A9DE;
+  color: #F16B6F;
   text-decoration: underline;
   margin-left: 0%;
   margin-right: 0%;
 }
 
 #hideComments {
-  color: #30A9DE;
+  color: #F16B6F;
   text-decoration: underline;
   margin-left: 0%;
   margin-right: 0%;
@@ -116,12 +128,119 @@ body {
 
 #comment {
   background-color: #FBFFB9;
+  margin-bottom: 0px;
+  margin-top: 0px;
 }
 
 #comment:nth-child(even) {
-  background-color: tomato;
+  background-color: #F16B6F;
+  margin-bottom: 0px;
+  margin-top: 0px;
 }
 
-#optionsButtons {
+#commentDiv {
+  background-color: #FBFFB9;
+}
+
+#optionButtons {
   display: flex;
+  justify-content: center;
+  flex-direction: column;
+  margin-left: 60px;
+
+}
+
+#someText {
+  font-family: arial;
+  color: #e1eef6;
+}
+
+#options {
+  font-family: arial;
+  color: #f6ea8c;
+  font-size: 35px;
+  display:flex;
+  justify-content: center;
+}
+
+#body {
+  font-family: arial;
+  color: #e1eef6;
+  margin-left: 20px;
+  margin-right: 120px;
+}
+
+#newProject {
+  background-color: #f6ea8c;
+  font-size: 20px;
+  color: #274555;
+  width: 200px;
+  height: 40px;
+  border-radius: 15%;
+  margin-bottom: 20px;
+}
+
+#newEntry {
+  background-color: #f6ea8c;
+  font-size: 20px;
+  color: #274555;
+  width: 200px;
+  height: 40px;
+  border-radius: 15%;
+  margin-bottom: 20px;
+}
+
+#editProject {
+  background-color: #f6ea8c;
+  font-size: 20px;
+  color: #274555;
+  width: 200px;
+  height: 40px;
+  border-radius: 15%;
+  margin-bottom: 20px;
+}
+
+#deleteProject {
+  background-color: #f6ea8c;
+  font-size: 20px;
+  color: #274555;
+  width: 200px;
+  height: 40px;
+  border-radius: 15%;
+  margin-bottom: 20px;
+}
+
+#projectSelector {
+  display: flex;
+  justify-content: center;
+}
+
+#projectSelectorino {
+  width: 200px;
+  height: 20px;
+  margin-bottom: 20px;
+  background-color: #f6ea8c;
+}
+
+#addNewProject {
+  display: flex;
+  align-items: center;
+  flex-direction: column;
+  margin-left: 40px;
+}
+
+#addNewEntry {
+  display: flex;
+  align-items: center;
+  flex-direction: column;
+  margin-left: 40px;
+}
+
+#go {
+  background-color: #f6ea8c;
+  color: #274555;
+}
+
+#mainBlog {
+  margin-left: 25px;
 }

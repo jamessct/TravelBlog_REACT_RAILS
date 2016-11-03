@@ -21506,6 +21506,7 @@
 	    }.bind(this);
 	    request.send(JSON.stringify(entry));
 	    this.getProjects();
+	    location.reload();
 	  },
 	
 	  handleCommentSubmit: function handleCommentSubmit(comment) {
@@ -21518,11 +21519,13 @@
 	    request.onload = function () {
 	      if (request.status === 200) {
 	        var responseData = JSON.parse(request.responseText);
-	        this.setState({ comments: newEntry });
+	        this.setState({ comments: newComment });
 	      }
 	    }.bind(this);
 	    request.send(JSON.stringify(comment));
 	    this.getProjects();
+	    this.getComments();
+	    location.reload();
 	  },
 	
 	  getEntries: function getEntries(index) {
@@ -21564,12 +21567,12 @@
 	          React.createElement(
 	            'h1',
 	            { id: 'title' },
-	            'scrappiii'
+	            'trippii'
 	          ),
 	          React.createElement(
 	            'h4',
 	            { id: 'tagline' },
-	            'your digital scrapbook for creative projects'
+	            'for all your travel blog related requirements'
 	          )
 	        )
 	      ),
@@ -21619,7 +21622,13 @@
 	      React.createElement(
 	        'h2',
 	        { id: 'projectTitle' },
-	        this.props.project.title
+	        React.createElement(
+	          'i',
+	          null,
+	          this.props.project.title
+	        ),
+	        ', by ',
+	        this.props.project.author
 	      ),
 	      React.createElement(EntryButtons, {
 	        project: this.props.project,
@@ -21664,7 +21673,11 @@
 	    return React.createElement(
 	      'div',
 	      { id: 'entryButtonsContainer' },
-	      buttons,
+	      React.createElement(
+	        'div',
+	        { id: 'entryButtonsDiv' },
+	        buttons
+	      ),
 	      React.createElement(MainEntry, {
 	        entry: this.props.entry,
 	        showComments: this.props.showComments,
@@ -21693,23 +21706,27 @@
 	    if (!this.props.entry) return React.createElement('div', null);
 	    var title = React.createElement(
 	      'h2',
-	      null,
-	      this.props.entry.title
+	      { id: 'someText' },
+	      React.createElement(
+	        'b',
+	        null,
+	        this.props.entry.title
+	      )
 	    );
 	    var tagline = React.createElement(
-	      'h4',
-	      null,
+	      'h3',
+	      { id: 'someText' },
 	      this.props.entry.tagline
 	    );
 	    var mainPhoto = React.createElement('img', { id: 'mainPhoto', src: this.props.entry.mainPhoto });
 	    var text = React.createElement(
 	      'p',
-	      null,
+	      { id: 'body' },
 	      this.props.entry.body
 	    );
 	    return React.createElement(
 	      'div',
-	      null,
+	      { id: 'mainBlog' },
 	      title,
 	      tagline,
 	      mainPhoto,
@@ -21811,7 +21828,8 @@
 	      'div',
 	      { id: 'commentDiv' },
 	      React.createElement(CommentInput, {
-	        commentRequest: this.props.commentRequest }),
+	        commentRequest: this.props.commentRequest,
+	        entry: this.props.entry }),
 	      comments
 	    );
 	    return React.createElement('div', null);
@@ -21832,7 +21850,7 @@
 	  displayName: "CommentInput",
 	
 	  getInitialState: function getInitialState() {
-	    return { author: "", comment: "" };
+	    return { author: "", comment: "", entry_id: "" };
 	  },
 	
 	  handleAuthorChange: function handleAuthorChange(event) {
@@ -21847,16 +21865,18 @@
 	    event.preventDefault();
 	    var author = this.state.author.trim();
 	    var comment = this.state.comment.trim();
-	    if (!author || !comment) {
+	    var entry_id = this.props.entry.id;
+	    if (!author || !comment || !entry_id) {
 	      return;
 	    }
 	    this.props.commentRequest({
 	      comment: {
 	        author: author,
-	        comment: comment
+	        comment: comment,
+	        entry_id: entry_id
 	      }
 	    });
-	    this.setState({ comment: "", author: "" });
+	    this.setState({ comment: "", author: "", entry_id: "" });
 	  },
 	
 	  render: function render() {
@@ -21950,32 +21970,36 @@
 	        'div',
 	        { id: 'sidebar' },
 	        React.createElement(
-	          'h4',
-	          null,
-	          'Select a project from the dropdown, or choose one of the options below'
+	          'h2',
+	          { id: 'options' },
+	          'Options'
 	        ),
 	        React.createElement(ProjectSelector, {
 	          projects: this.props.projects,
 	          selectProject: this.props.selectProject,
 	          getEntries: this.props.getEntries }),
-	        React.createElement('button', { id: 'deleteProject' }),
 	        React.createElement(
 	          'div',
 	          { id: 'optionButtons' },
 	          React.createElement(
 	            'button',
-	            { id: 'NewProject', onClick: this.newProjectClick },
+	            { id: 'newProject', onClick: this.newProjectClick },
 	            'Add new project'
 	          ),
 	          React.createElement(
 	            'button',
-	            { id: 'addNewEntry', onClick: this.newEntryClick },
+	            { id: 'newEntry', onClick: this.newEntryClick },
 	            'Add new entry'
 	          ),
 	          React.createElement(
 	            'button',
 	            { id: 'editProject', onClick: this.editProjectClick },
 	            'Edit project'
+	          ),
+	          React.createElement(
+	            'button',
+	            { id: 'deleteProject' },
+	            'Delete Project'
 	          )
 	        ),
 	        React.createElement(NewProject, {
@@ -21986,32 +22010,36 @@
 	      'div',
 	      { id: 'sidebar' },
 	      React.createElement(
-	        'h4',
-	        null,
-	        'Select a project from the dropdown, or choose one of the options below'
+	        'h2',
+	        { id: 'options' },
+	        'Options'
 	      ),
 	      React.createElement(ProjectSelector, {
 	        projects: this.props.projects,
 	        selectProject: this.props.selectProject,
 	        getEntries: this.props.getEntries }),
-	      React.createElement('button', { id: 'deleteProject' }),
 	      React.createElement(
 	        'div',
 	        { id: 'optionButtons' },
 	        React.createElement(
 	          'button',
-	          { id: 'NewProject', onClick: this.newProjectClick },
+	          { id: 'newProject', onClick: this.newProjectClick },
 	          'Add new project'
 	        ),
 	        React.createElement(
 	          'button',
-	          { id: 'addNewEntry', onClick: this.newEntryClick },
+	          { id: 'newEntry', onClick: this.newEntryClick },
 	          'Add new entry'
 	        ),
 	        React.createElement(
 	          'button',
 	          { id: 'editProject', onClick: this.editProjectClick },
 	          'Edit project'
+	        ),
+	        React.createElement(
+	          'button',
+	          { id: 'deleteProject' },
+	          'Delete'
 	        )
 	      ),
 	      React.createElement(NewEntry, {
@@ -22023,20 +22051,19 @@
 	      'div',
 	      { id: 'sidebar' },
 	      React.createElement(
-	        'h4',
-	        null,
-	        'Select a project from the dropdown, or choose one of the options below'
+	        'h2',
+	        { id: 'options' },
+	        'Options'
 	      ),
 	      React.createElement(ProjectSelector, {
 	        selectProject: this.props.selectProject,
 	        getEntries: this.props.getEntries }),
-	      React.createElement('button', { id: 'deleteProject' }),
 	      React.createElement(
 	        'div',
 	        { id: 'optionButtons' },
 	        React.createElement(
 	          'button',
-	          { id: 'NewProject', onClick: this.newProjectClick },
+	          { id: 'newProject', onClick: this.newProjectClick },
 	          'Add new project'
 	        ),
 	        React.createElement(
@@ -22048,6 +22075,11 @@
 	          'button',
 	          { id: 'editProject', onClick: this.editProjectClick },
 	          'Edit project'
+	        ),
+	        React.createElement(
+	          'button',
+	          { id: 'deleteProject' },
+	          'Delete'
 	        )
 	      ),
 	      React.createElement(NewEntry, {
@@ -22058,32 +22090,36 @@
 	      'div',
 	      { id: 'sidebar' },
 	      React.createElement(
-	        'h4',
-	        null,
-	        'Select a project from the dropdown, or choose one of the options below'
+	        'h2',
+	        { id: 'options' },
+	        'Options'
 	      ),
 	      React.createElement(ProjectSelector, {
 	        projects: this.props.projects,
 	        selectProject: this.props.selectProject,
 	        getEntries: this.props.getEntries }),
-	      React.createElement('button', { id: 'deleteProject' }),
 	      React.createElement(
 	        'div',
 	        { id: 'optionButtons' },
 	        React.createElement(
 	          'button',
-	          { id: 'NewProject', onClick: this.newProjectClick },
+	          { id: 'newProject', onClick: this.newProjectClick },
 	          'Add new project'
 	        ),
 	        React.createElement(
 	          'button',
-	          { id: 'addNewEntry', onClick: this.newEntryClick },
+	          { id: 'newEntry', onClick: this.newEntryClick },
 	          'Add new entry'
 	        ),
 	        React.createElement(
 	          'button',
 	          { id: 'editProject', onClick: this.editProjectClick },
 	          'Edit project'
+	        ),
+	        React.createElement(
+	          'button',
+	          { id: 'deleteProject' },
+	          'Delete Project'
 	        )
 	      )
 	    );
@@ -22121,10 +22157,10 @@
 	    });
 	    return React.createElement(
 	      "div",
-	      null,
+	      { id: "projectSelector" },
 	      React.createElement(
 	        "select",
-	        { id: "projectSelector", defaultValue: "default", onChange: this.handleSelectChange },
+	        { id: "projectSelectorino", defaultValue: "default", onChange: this.handleSelectChange },
 	        React.createElement(
 	          "option",
 	          { id: "default" },
@@ -22188,28 +22224,33 @@
 	  render: function render() {
 	    console.log(this.state.title);
 	    return React.createElement(
-	      "form",
-	      { className: "projectForm", onSubmit: this.handleSubmit },
-	      React.createElement("input", {
-	        type: "text",
-	        placeholder: "Project title",
-	        onChange: this.handleProjectChange
-	      }),
-	      React.createElement("input", {
-	        type: "text",
-	        placeholder: "Author",
-	        onChange: this.handleAuthorChange
-	      }),
-	      React.createElement("input", {
-	        type: "text",
-	        placeholder: "Summary",
-	        onChange: this.handleSummaryChange
-	      }),
-	      React.createElement("input", {
-	        type: "submit",
-	        value: "GO!"
+	      "div",
+	      { id: "addNewProject" },
+	      React.createElement(
+	        "form",
+	        { className: "projectForm", onSubmit: this.handleSubmit },
+	        React.createElement("input", {
+	          type: "text",
+	          placeholder: "Project title",
+	          onChange: this.handleProjectChange
+	        }),
+	        React.createElement("input", {
+	          type: "text",
+	          placeholder: "Author",
+	          onChange: this.handleAuthorChange
+	        }),
+	        React.createElement("input", {
+	          type: "text",
+	          placeholder: "Summary",
+	          onChange: this.handleSummaryChange
+	        }),
+	        React.createElement("input", {
+	          id: "go",
+	          type: "submit",
+	          value: "GO!"
 	
-	      })
+	        })
+	      )
 	    );
 	  }
 	});
@@ -22283,7 +22324,7 @@
 	  render: function render() {
 	    return React.createElement(
 	      "div",
-	      null,
+	      { id: "addNewEntry" },
 	      React.createElement(
 	        "form",
 	        { className: "entryForm", onSubmit: this.handleSubmit },
@@ -22307,6 +22348,7 @@
 	          onChange: this.handleBodyChange
 	        }),
 	        React.createElement("input", {
+	          id: "go",
 	          type: "submit",
 	          value: "GO!"
 	        })

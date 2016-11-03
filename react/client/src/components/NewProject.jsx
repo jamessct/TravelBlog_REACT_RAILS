@@ -40,6 +40,7 @@ var NewProject = React.createClass({
   render: function() {
     console.log(this.state.title)
     return (
+      <div id="addNewProject">
       <form className="projectForm" onSubmit={this.handleSubmit}>
         <input 
           type="text" 
@@ -59,13 +60,14 @@ var NewProject = React.createClass({
           onChange={this.handleSummaryChange}
         />
 
-        <input 
+        <input
+          id="go" 
           type="submit"
           value="GO!"
           
         />
       </form>
-
+    </div>
     ) 
   }
 })
