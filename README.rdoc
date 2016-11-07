@@ -1,0 +1,1 @@
+In the final project at CodeClan, I wished to consolidate the material which I had learned over the previous 2 weeks while studying React and Rails.  My aim was to create a travel blog, utilising Rails to manage the database, while practicing managing a large number of components with REACT.
